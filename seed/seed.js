@@ -23,27 +23,9 @@ const seedDB = ({ topicsData, usersData, articlesData }) => {
       return Comment.insertMany(formatCommentData(commentsData, articleRef, userRef))
     })
     .then((commentDocs) => {
-      console.log(commentDocs)
+      //console.log(commentDocs)
+      return Promise.all([articleDocs, commentDocs, topicDocs, userDocs])
     })
 };
 
-
 module.exports = seedDB;
-
-
-
-
-
-
-
-
-
-
-
-
-// .then(([actorDocs, companyDocs]) => {
-//   const actorRef = createRefObj(actorData, actorDocs)
-//   const companyRef = createRefObj(companyData, companyDocs)
-//   return Movie.insertMany(formatMovieData(movieData, actorRef, companyRef))
-// })
-
