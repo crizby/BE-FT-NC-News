@@ -7,16 +7,12 @@ const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api');
 mongoose.Promise = Promise;
 
-
-
 mongoose.connect(DB_URL)
   .then(() => {
     console.log(`Connected to the DB on ${DB_URL}...`)
   })
 
-
 app.use(bodyParser.json());
-
 
 
 app.get('/', (req, res, next) => {
@@ -24,6 +20,11 @@ app.get('/', (req, res, next) => {
 });
 
 app.use('/api', apiRouter);
+
+app.use((err, req, res, next) => {
+  err.status ?
+    res.status(404).send({ message: err.message }) : next(err);
+})
 
 
 module.exports = app;

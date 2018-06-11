@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 mongoose.Promise = Promise;
 const { Article, Comment, Topic, User } = require('../models');
-const { articlesData, commentsData, topicsData, usersData } = process.env.NODE_ENV === 'test' ? require('./testData') : require('./devData')
+const { articlesData, commentData, topicsData, usersData } = process.env.NODE_ENV === 'test' ? require('./testData') : require('./devData')
 const { createRefObj, createArticleRefObj, formatArticleData, formatCommentData } = require('../utils');
 
-const seedDB = ({ topicsData, usersData, articlesData }) => {
+const seedDB = ({ topicsData, usersData, articleData }) => {
   return mongoose.connection.dropDatabase()
     .then(() => {
       return Promise.all([
@@ -14,17 +14,11 @@ const seedDB = ({ topicsData, usersData, articlesData }) => {
     })
     .then(([topicDocs, userDocs]) => {
       const userRef = createRefObj(usersData, userDocs)
-      return Promise.all([Article.insertMany(formatArticleData(articlesData, userRef)), userRef])
+      return Promise.all([topicDocs, userDocs, Article.insertMany(formatArticleData(articleData, userRef)), userRef])
     })
-    .then(([articleDocs, userRef]) => {
-      const articleRef = createArticleRefObj(articlesData, articleDocs)
-      console.log(userRef);
-      //const userRef = createRefObj(usersData, usersDocs)
-      return Comment.insertMany(formatCommentData(commentsData, articleRef, userRef))
-    })
-    .then((commentDocs) => {
-      //console.log(commentDocs)
-      return Promise.all([articleDocs, commentDocs, topicDocs, userDocs])
+    .then(([topicDocs, userDocs, articleDocs, userRef]) => {
+      const articleRef = createArticleRefObj(articleData, articleDocs)
+      return Promise.all([topicDocs, userDocs, articleDocs, Comment.insertMany(formatCommentData(commentData, articleRef, userRef))])
     })
 };
 
