@@ -20,7 +20,7 @@ const getArticlesByTopic = (req, res, next) => {
     })
     .then(([articleDocs, ...commentCount]) => {
       let articles = articleDocs.map((doc, index) => {
-        doc.totalcomments = commentCount[index];
+        doc.comments = commentCount[index];
         return doc;
       })
       return articles
@@ -33,7 +33,6 @@ const getArticlesByTopic = (req, res, next) => {
     })
     .catch(next)
 };
-
 
 const postArticleToTopic = (req, res, next) => {
   let inputArticle = {
@@ -50,6 +49,7 @@ const postArticleToTopic = (req, res, next) => {
     })
     .catch(next)
 }
+
 
 module.exports = { getTopics, getArticlesByTopic, postArticleToTopic };
 

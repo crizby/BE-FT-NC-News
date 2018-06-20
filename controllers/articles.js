@@ -39,22 +39,20 @@ const postCommentToArticle = (req, res, next) => {
     .catch(next)
 }
 
-const incrementArticleVotes = (req, res, next) => {
-  //const {voteIncrement} = req.query.vote
-  const { article_id } = req.params
-  if (req.query.vote === true)
-    Article.findByIdAndUpdate({ _id: article_id })
+const updateArticleVote = (req, res, next) => {
+  if (req.query.vote !== undefined) {
+    const { vote } = req.query
+    const { article_id } = req.params
+    let voteRef = { 'up': 1, 'down': -1 }
+    Article.findByIdAndUpdate(article_id, { $inc: { votes: voteRef[vote] } })
+      .then(article => {
+        res.status(201).send({ article })
+      })
+      .catch(next)
+  }
 }
 
 
-
-
-
-
-
-
-
-
-module.exports = { getArticles, getArticleById, getCommentsForArticle, postCommentToArticle, incrementArticleVotes }
+module.exports = { getArticles, getArticleById, getCommentsForArticle, postCommentToArticle, updateArticleVote }
 
 
