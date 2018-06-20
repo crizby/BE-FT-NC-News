@@ -1,7 +1,22 @@
 const { Article, Comment } = require('../models');
 
 const getArticles = (req, res, next) => {
-  Article.find()
+  return Article.find().lean()
+    .then(articleDocs => {
+      let commentCount = articleDocs.map((article) => {
+        return Comment.find({ belongs_to: article._id }).count()
+
+      })
+      return Promise.all([articleDocs, ...commentCount])
+    })
+    .then(([articleDocs, ...commentCount]) => {
+
+      let articles = articleDocs.map((doc, index) => {
+        doc.comments = commentCount[index];
+        return doc;
+      })
+      return articles
+    })
     .then(articles => {
       res.send({ articles });
     })
