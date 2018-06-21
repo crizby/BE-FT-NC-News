@@ -1,7 +1,7 @@
 const { Topic, Article, Comment } = require('../models');
 
 const getTopics = (req, res, next) => {
-  Topic.find()
+  return Topic.find()
     .then(topics => {
       res.send({ topics });
     })
@@ -41,7 +41,6 @@ const postArticleToTopic = (req, res, next) => {
     belongs_to: req.params.topic,
     created_by: req.body.created_by
   }
-
   const newArticle = new Article(inputArticle)
   return newArticle.save()
     .then(article => {

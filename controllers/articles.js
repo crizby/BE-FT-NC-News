@@ -1,7 +1,7 @@
 const { Article, Comment } = require('../models');
 
 const getArticles = (req, res, next) => {
-  return Article.find().lean()
+  Article.find().lean()
     .then(articleDocs => {
       let commentCount = articleDocs.map((article) => {
         return Comment.find({ belongs_to: article._id }).count()
@@ -59,9 +59,9 @@ const updateArticleVote = (req, res, next) => {
     const { vote } = req.query
     const { article_id } = req.params
     let voteRef = { 'up': 1, 'down': -1 }
-    Article.findByIdAndUpdate(article_id, { $inc: { votes: voteRef[vote] } })
+    Article.findByIdAndUpdate(article_id, { $inc: { votes: voteRef[vote] } }, { new: true })
       .then(article => {
-        res.status(201).send({ article })
+        res.status(200).send({ article })
       })
       .catch(next)
   }

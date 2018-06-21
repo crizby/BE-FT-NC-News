@@ -14,7 +14,6 @@ const createArticleRefObj = (data, docs) => {
 
 const formatArticleData = (articlesData, userRef) => {
   return articlesData.map(articleDatum => {
-    const { title, body, belongs_to, votes, created_by } = articleDatum;
     return {
       ...articleDatum,
       created_by: userRef[articleDatum.created_by],

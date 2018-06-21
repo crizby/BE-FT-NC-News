@@ -1,4 +1,3 @@
-//import { Mongoose } from "mongoose";
 const app = require('express')();
 const { DB_URL } = require('./config');
 const express = require('express');
@@ -7,13 +6,13 @@ const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api');
 mongoose.Promise = Promise;
 
+
 mongoose.connect(DB_URL)
   .then(() => {
     console.log(`Connected to the DB on ${DB_URL}...`)
   })
 
 app.use(bodyParser.json());
-
 
 app.get('/', (req, res, next) => {
   res.send('Welcome to NC NEWS');
