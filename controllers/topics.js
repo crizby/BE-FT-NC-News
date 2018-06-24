@@ -25,11 +25,10 @@ const getArticlesByTopic = (req, res, next) => {
       })
       return articles
     })
-    .then((articles) => {
-      if (articles.length === 0) return next({
-        status: 400, message: 'Article topic not found!'
-      })
-      else res.send({ articles });
+    .then(articles => {
+      articles.length === 0
+        ? next({ status: 404, message: `Page not found for topic : ${topic}` })
+        : res.status(200).send({ articles })
     })
     .catch(next)
 };

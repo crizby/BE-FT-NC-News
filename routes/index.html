@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>NC News</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+</head>
+
+<body>
+  <p class='is-size-1'>
+    Northcoders News
+  </p>
+  <p class='is-size-3'>
+    API Endpoints</p>
+  <br>
+  <p class='is-size-5'>
+    GET
+    <code>/api/topics</code>
+  </p>
+  <p class='is-size-5'>Get all the topics</p>
+  <br>
+  <p class='is-size-5'>
+    GET
+    <code>/api/topics/:topic/articles</code>
+  </p>
+  <p class='is-size-5'>Return all the articles for a certain topic</p>
+  <br>
+  <p class='is-size-5'>
+    GET
+    <code>/api/articles</code>
+  </p>
+  <p class='is-size-5'>Returns all the articles</p>
+  <br>
+  <p class='is-size-5'>
+    GET
+    <code>/api/articles/:article_id/comments</code>
+  </p>
+  <p class='is-size-5'>Get all the comments for a individual article</p>
+  <br>
+  <p class='is-size-5'>
+    POST
+    <code>/api/articles/:article_id/comments</code>
+  </p>
+  <p class='is-size-5'>Add a new comment to an article. This route requires a JSON
+    <code>body</code> with a
+    <code>comment</code> key and value pair
+    <br> e.g:
+    <code>{"comment": "This is my new comment"}</code>
+  </p>
+  <br>
+  <p class='is-size-5'>
+    PUT
+    <code>/api/articles/:article_id</code>
+  </p>
+  <p class='is-size-5'>Increment or Decrement the votes of an article by one. This route requires a
+    <code>vote</code> query of 'up' or 'down'
+    <br> e.g:
+    <code>http://northcoders-news-api.herokuapp.com/api/articles/:article_id?vote=up</code>
+  </p>
+  <br>
+  <p class='is-size-5'>
+    PUT
+    <code>/api/comments/:comment_id</code>
+  </p>
+  <p class='is-size-5'>Increment or Decrement the votes of a comment by one. This route requires a
+    <code>vote</code> query of 'up' or 'down'
+    <br> e.g:
+    <code>http://northcoders-news-api.herokuapp.com/api/comments/:comment_id?vote=down</code>
+  </p>
+  <br>
+  <p class='is-size-5'>
+    DELETE
+    <code>/api/comments/:comment_id</code>
+  </p>
+  <p class='is-size-5'>Deletes a comment if the comment was created by the Northcoder user</p>
+  <br>
+  <p class='is-size-5'>
+    GET
+    <code>/api/users/:username</code>
+  </p>
+  <p class='is-size-5'>Returns a JSON object with the profile data for the specified user.</p>
+
+</body>
+
+</html>

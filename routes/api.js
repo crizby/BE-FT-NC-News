@@ -11,7 +11,7 @@ apiRouter.use('/comments', commentsRouter);
 apiRouter.use('/users', usersRouter);
 
 apiRouter.use('/', (req, res, next) => {
-  res.sendFile(__dirname + '../index.html')
+  res.sendFile(__dirname + '/index.html')
 });
 
 

@@ -22,9 +22,11 @@ const updateCommentVote = (req, res, next) => {
     const { vote } = req.query
     const { comment_id } = req.params
     let voteRef = { 'up': 1, 'down': -1 }
-    Comment.findByIdAndUpdate(comment_id, { $inc: { votes: voteRef[vote] } })
+    Comment.findByIdAndUpdate(comment_id, { $inc: { votes: voteRef[vote] } }, { new: true })
       .then(comment => {
-        res.status(201).send({ comment })
+        comment === null
+          ? next({ status: 404, message: `Page not found for id : ${comment_id}` })
+          : res.status(201).send({ comment });
       })
       .catch(next)
   }
@@ -33,8 +35,8 @@ const updateCommentVote = (req, res, next) => {
 const deleteComment = (req, res, next) => {
   const { comment_id } = req.params
   Comment.findByIdAndRemove(comment_id)
-    .then(comment => {
-      res.status(200).send({ comment, msg: "Comment Deleted!" })
+    .then(() => {
+      res.status(204).send({})
     })
     .catch(next)
 }

@@ -21,7 +21,7 @@ describe('/northcoders-news', () => {
     return mongoose.disconnect()
   })
 
-  describe('/api/topics', () => {
+  describe.only('/api/topics', () => {
     it("GET responds with status 200 and an array of topics", () => {
       return request
         .get('/api/topics')
@@ -45,12 +45,12 @@ describe('/northcoders-news', () => {
           expect(res.body.articles[0]).to.be.an('object')
         })
     })
-    it('GET responds with status 404 for an invalid topic name', () => {
+    it('GET responds with status 400 for an invalid topic name', () => {
       return request
-        .get('/api/topics/boringtopic/articles')
+        .get('/api/topics/reliabletrains/articles')
         .expect(404)
         .then(res => {
-          expect(res.body.message).to.equal('Article topic not found!');
+          expect(res.body.message).to.equal(`Page not found for topic : reliabletrains`);
         })
     })
     it('POST responds with status 201 and successfully posts a new article', () => {
@@ -68,6 +68,18 @@ describe('/northcoders-news', () => {
           expect(res.body.article).to.include.keys(['_id', 'title', 'body', 'created_by'])
         })
     })
+    it('POST responds with status 400 for an article with insufficient fields', () => {
+      return request
+        .post('/api/topics/coding/articles')
+        .send({
+          "title": "Living in the shadow of a great man",
+          "body": "I find this existence challenging"
+        })
+        .expect(400)
+        .then(res => {
+          expect(res.body.message).to.equal("articles validation failed: created_by: Path `created_by` is required.");
+        })
+    })
   })
 
   describe('/api/articles', () => {
@@ -83,7 +95,7 @@ describe('/northcoders-news', () => {
     });
   })
 
-  describe('/articles/:article_id', () => {
+  describe.only('/articles/:article_id', () => {
     it('GET responds with status 200 an single article for the given id', () => {
       const article_id = articleDocs[0]._id;
       return request
@@ -95,23 +107,32 @@ describe('/northcoders-news', () => {
           expect(res.body.article[0]).to.be.an('object')
         })
     })
-    it.only('PUT request responds with status 200 and increments the vote count of the article by 1', () => {
+    it('PUT request responds with status 200 and increments the vote count of the article by 1', () => {
       const article_id = articleDocs[0]._id;
       return request
         .put(`/api/articles/${article_id}?vote=up`)
         .expect(200)
         .then(res => {
-          console.log(res.body.article)
           expect(res.body.article.votes).to.equal(1)
         })
     })
+    it('GET responds with status 400 for an invalid article ID', () => {
+      return request
+        .get(`/api/articles/ab123`)
+        .expect(400)
+        .then(res => {
+          expect(res.body.message).to.equal(`Bad request : ab123 is not a valid ID`);
+        })
+    });
+    it('GET responds with 404 for an article id that doesn\'t exist', () => {
+      return request
+        .get(`/api/articles/${commentDocs[0]._id}`)
+        .expect(404)
+        .then(res => {
+          expect(res.body.message).to.equal(`Page not found for article_id : ${commentDocs[0]._id}`)
+        })
+    })
   })
-
-
-
-
-
-
 
   describe('/articles/:article_id/comments', () => {
     it('GET responds with status 200 and all the articles comments for the given id', () => {
@@ -123,6 +144,14 @@ describe('/northcoders-news', () => {
           expect(res.body.comments[0]).to.include.keys(['_id', 'body', 'belongs_to', 'created_by', 'votes'])
           expect(res.body.comments.length).to.equal(2)
           expect(res.body.comments).to.be.an('array')
+        })
+    })
+    it('GET responds with 404 for an article id that doesn\'t exist', () => {
+      return request
+        .get(`/api/articles/${commentDocs[0]._id}/comments`)
+        .expect(404)
+        .then(res => {
+          expect(res.body.message).to.equal(`Page not found for article_id : ${commentDocs[0]._id}`)
         })
     })
     it('POST responds with status 201 and successfully posts a comment to the article for the given id', () => {
@@ -144,7 +173,65 @@ describe('/northcoders-news', () => {
     })
   })
 
+  describe('comments/:comment_id', () => {
+    it('PUT request responds with status 200 and increments the vote count of the comment by 1', () => {
+      const comment_id = commentDocs[0]._id;
+      return request
+        .put(`/api/comments/${comment_id}?vote=up`)
+        .expect(201)
+        .then(res => {
+          expect(res.body.comment.votes).to.equal(8)
+        })
+    })
+    it('PUT responds with status 404 for a comment ID that doesn\'t exist', () => {
+      const comment_id = userDocs[0]._id;
+      return request
+        .put(`/api/comments/${comment_id}?vote=up`)
+        .expect(404)
+        .then(res => {
+          expect(res.body.message).to.equal(`Page not found for id : ${comment_id}`);
+        })
+    })
+    it('PUT request responds with status 200 and increments the vote count of the comment by -1', () => {
+      const comment_id = commentDocs[0]._id;
+      return request
+        .put(`/api/comments/${comment_id}?vote=down`)
+        .expect(201)
+        .then(res => {
+          expect(res.body.comment.votes).to.equal(6)
+        })
+    })
+    it('DELETE request responds with status 204 and deletes the comment for the given id', () => {
+      const comment_id = commentDocs[0]._id;
+      return request
+        .delete(`/api/comments/${comment_id}`)
+        .expect(204)
+        .then(res => {
+          expect(res.body).to.eql({})
+        })
+    })
+  })
 
-
-
+  describe('/users/:username', () => {
+    it('GET responds with status 200 a profile object for the given username', () => {
+      const username = userDocs[0].username;
+      return request
+        .get(`/api/users/${username}`)
+        .expect(200)
+        .then(res => {
+          expect(res.body.user[0]).to.include.keys(['_id', 'username', 'name', 'avatar_url'])
+          expect(res.body.user.length).to.equal(1)
+          expect(res.body.user[0]).to.be.an('object')
+        })
+    })
+    it('GET responds with status 404 for an invalid username', () => {
+      const username = 'joeyjoejoeshabadoo';
+      return request
+        .get(`/api/users/${username}`)
+        .expect(404)
+        .then(res => {
+          expect(res.body.message).to.equal(`Page not found for username : ${username}`);
+        })
+    });
+  })
 })

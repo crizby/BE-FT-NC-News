@@ -18,7 +18,7 @@ const getArticles = (req, res, next) => {
       return articles
     })
     .then(articles => {
-      res.send({ articles });
+      res.status(200).send({ articles });
     })
     .catch(next)
 }
@@ -27,7 +27,9 @@ const getArticleById = (req, res, next) => {
   const { article_id } = req.params
   Article.find({ _id: article_id })
     .then(article => {
-      res.send({ article })
+      article.length === 0
+        ? next({ status: 404, message: `Page not found for article_id : ${article_id}` })
+        : res.status(200).send({ article })
     })
     .catch(next)
 }
@@ -36,8 +38,11 @@ const getCommentsForArticle = (req, res, next) => {
   const { article_id } = req.params
   Comment.find({ belongs_to: article_id })
     .then(comments => {
-      res.send({ comments })
+      comments.length === 0
+        ? next({ status: 404, message: `Page not found for article_id : ${article_id}` })
+        : res.status(200).send({ comments })
     })
+    .catch(next)
 }
 
 const postCommentToArticle = (req, res, next) => {
