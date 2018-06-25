@@ -95,7 +95,7 @@ describe('/northcoders-news', () => {
     });
   })
 
-  describe.only('/articles/:article_id', () => {
+  describe('/articles/:article_id', () => {
     it('GET responds with status 200 an single article for the given id', () => {
       const article_id = articleDocs[0]._id;
       return request

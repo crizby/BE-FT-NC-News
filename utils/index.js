@@ -34,29 +34,3 @@ const formatCommentData = (commentsData, articleRef, userRef) => {
 }
 
 module.exports = { createRefObj, createArticleRefObj, formatArticleData, formatCommentData }
-
-
-
-
-
-
-
-
-
-// const formatArticlesData = (articlesData) => {
-//   return articlesData.map(articleDatum => {
-//     return {
-//       ...articleDatum,
-//       belongs_to: articleDatum.topic
-//     }
-//   })
-// }
-
-// const formatCompanyData = (companyData) => {
-//   return companyData.map(companyDatum => {
-//     return {
-//       ...companyDatum,
-//       hq: companyDatum.headquarters
-//     }
-//   })
-// }
