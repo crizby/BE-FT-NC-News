@@ -1,6 +1,5 @@
 const app = require('express')();
 const { DB_URL } = require('./config');
-const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api');
@@ -25,7 +24,6 @@ app.get('/*', (req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
-  console.log(err)
   err.status
     ? res.status(err.status).send({ message: err.message })
     : next(err);

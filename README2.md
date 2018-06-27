@@ -52,13 +52,15 @@ http://localhost:9090/api
 
 ## Built With
 
-[Node](https://nodejs.org/en/),
-[Express](https://expressjs.com/),
-[MongoDB](https://www.mongodb.com/),
-[Mongoose](http://mongoosejs.com/)
+[Javascript ES6](http://http://es6-features.org)\
+[Node 9.9.0](https://nodejs.org/en/)\
+[Express 4.16.03](https://expressjs.com/)\
+[MongoDB 3.6](https://www.mongodb.com/)\
+[Mongoose 5.0.14](http://mongoosejs.com/)
+
 
 ## Acknowledments
 
-Shout out to Mitch, Paul R, Ant and anyone else who's helped along the way.
+Shout outs to Mitch, Paul R, JD & Ant and anyone else who's helped along the way.
 
 

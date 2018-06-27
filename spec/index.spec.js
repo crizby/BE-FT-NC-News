@@ -21,7 +21,7 @@ describe('/northcoders-news', () => {
     return mongoose.disconnect()
   })
 
-  describe.only('/api/topics', () => {
+  describe('/api/topics', () => {
     it("GET responds with status 200 and an array of topics", () => {
       return request
         .get('/api/topics')
