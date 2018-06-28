@@ -6,8 +6,7 @@ This is my implementation of the Northcoders News API.
 
 The app is hosted on Heroku and can be found at:
 
-[api.heroku.com](api.heroku.com)
-(Work in progess due to port issues).
+[https://cb-nc-news.herokuapp.com/](https://cb-nc-news.herokuapp.com/)
 
 ## Installing a Local Version:
 
