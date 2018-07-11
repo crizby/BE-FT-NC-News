@@ -1,15 +1,12 @@
 const app = require('express')();
-process.env.NODE_ENV === 'production' ? DB_URL = process.env.DB_URL : { DB_URL } = require('./config');
-
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api');
+const cors = require('cors');
+process.env.NODE_ENV === 'production' ? DB_URL = process.env.DB_URL : { DB_URL } = require('./config');
 mongoose.Promise = Promise;
 
-
-// module.exports = process.env.NODE_ENV === 'production'
-//   ? config
-//   : require('./config')
+app.use(cors());
 
 mongoose.connect(DB_URL)
   .then(() => {
