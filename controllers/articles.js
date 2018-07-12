@@ -25,9 +25,9 @@ const getArticles = (req, res, next) => {
 
 const getArticleById = (req, res, next) => {
   const { article_id } = req.params
-  Article.find({ _id: article_id })
+  Article.findById(article_id)
     .then(article => {
-      article.length === 0
+      !article
         ? next({ status: 404, message: `Page not found for article_id : ${article_id}` })
         : res.status(200).send({ article })
     })
