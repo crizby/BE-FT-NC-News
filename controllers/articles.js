@@ -37,7 +37,7 @@ const getArticleById = (req, res, next) => {
 
 const getCommentsForArticle = (req, res, next) => {
   const { article_id } = req.params
-  Comment.find({ belongs_to: article_id })
+  Comment.find({ belongs_to: article_id }).populate("created_by")
     .then(comments => {
       comments.length === 0
         ? next({ status: 404, message: `Page not found for article_id : ${article_id}` })
