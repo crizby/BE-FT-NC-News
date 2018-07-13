@@ -1,7 +1,8 @@
 const { Article, Comment } = require('../models');
 
 const getArticles = (req, res, next) => {
-  Article.find().lean()
+
+  Article.find().populate("created_by").lean()
     .then(articleDocs => {
       let commentCount = articleDocs.map((article) => {
         return Comment.find({ belongs_to: article._id }).count()
@@ -25,7 +26,7 @@ const getArticles = (req, res, next) => {
 
 const getArticleById = (req, res, next) => {
   const { article_id } = req.params
-  Article.findById(article_id)
+  Article.findById(article_id).populate("created_by")
     .then(article => {
       !article
         ? next({ status: 404, message: `Page not found for article_id : ${article_id}` })
