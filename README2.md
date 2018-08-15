@@ -10,7 +10,7 @@ The app is hosted on Heroku and can be found at:
 
 ## Installing a Local Version:
 
-Clone the repo from https://github.com/crizby/BE-FT-northcoders-news
+Clone the repo from https://github.com/crizby/BE-FT-NC-News.git
 
 Open up in VS Code and in the command line run npm install to install all dependencies.
 ```
